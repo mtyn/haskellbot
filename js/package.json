@@ -1,0 +1,10 @@
+{
+  "name": "HaskellBot",
+  "version": "1.0.0",
+  "description": "An enlightened bot for asking haskell questions",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
+}
