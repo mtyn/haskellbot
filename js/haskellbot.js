@@ -1,11 +1,18 @@
 let Runner = require('./haskellRunner.js');
 let spawn = require('child_process').spawn;
 
-var nameMappings = {
-    '428927344778936330': 'Nathan',
-    '283348992249561090': 'Kevin',
-    '340212889715474454': 'Tim'
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
+
+const quizQuestions = [
+    {
+        question: "Write some Haskell to find the maximum item in this list [1,4,9,2,3,12]",
+        answer: "12"
+    }
+]
 
 module.exports = {
     generateHelpText: () => {
@@ -49,6 +56,17 @@ main = putStrLn $ show out\n\
     },
 
     doQuiz: (channel, scores) => {
+        let question = getRandomInt(0, quizQuestions.length);
+        let questionMessage = ```**Quiz Time**: First to answer correctly wins! Use !hs answer <code> to answer.\n
+        \`\`\`
+${quizQuestions[question]}
+\`\`\`
+        ```
+        channel.send(questionMessage);
+        return question;
+    },
+
+    answer: (active, message) => {
 
     }
 

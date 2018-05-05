@@ -4,9 +4,20 @@ let HaskellBot = require('./haskellbot.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-var currentScores = {
-
+var nameMappings = {
+    '428927344778936330': 'nathan',
+    '283348992249561090': 'kevin',
+    '340212889715474454': 'tim'
 }
+
+var currentScores = {
+    'nathan': 0,
+    'tim': 0,
+    'kevin': 0,
+    'cher': 0
+}
+
+var activeQuizQuestion = -1;
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -52,7 +63,27 @@ client.on('message', msg => {
             break;
           case 'quiz':
             let targetChannel = msg.channel;
-            HaskellBot.doQuiz(targetChannel, currentScores);
+            if (activeQuizQuestion >= 0) {
+                msg.reply("There is already an active quiz, try answering that instead")
+            }
+            activeQuizQuestion = HaskellBot.doQuiz(targetChannel, currentScores);
+            break;
+          case 'answer':
+            var isRight = HaskellBot.answerQuiz(activeQuizQuestion, msg);
+            if (isRight) {
+                let user = nameMappings[sender];
+                currentScores[user] = currentScores[user] + 1
+                msg.reply(```
+Congrats, ${user.toUpperCase()}, you got a point! The current scores are:\n
+\`\`\`
+Kevin: ${currentScores.kevin},
+Nathan: ${currentScores.nathan},
+Tim: ${currentScores.tim},
+Cher: ${currentScores.cher}
+\`\`\`
+```)
+                activeQuizQuestion = -1;
+            }
             break;
           case 'help':
           default:
