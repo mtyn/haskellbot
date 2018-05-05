@@ -39,7 +39,7 @@ client.on('message', msg => {
       switch (switchString) {
           case 'compile':
             HaskellBot.runCode(sender, message, (output) => {
-                if (output.length > 2000) {
+                if (output.length > 1910) {
                     let bitsOfMessage = output.match(/.{1,1750}/g);
                     msg.reply("I ran your haskell! It was too long for one message, it will now come in segments.");
                     bitsOfMessage.forEach((b)=>{
