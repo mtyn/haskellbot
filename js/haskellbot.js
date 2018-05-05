@@ -7,7 +7,7 @@ module.exports = {
 Hi, I'm the enlightened HaskellBot! You summoned me with no command 😢.\n\
 My options are:\n\
 \`\`\`\n\
-!hs compile <glorious haskell code>: runs the provided haskell code and returns the result\n\
+!hs compile <glorious haskell code>: runs the provided haskell code and returns the result. Requires that the haskell has a function out with the result you want to get.\n\
 !hs help: shows this menu\n\
 \`\`\`\n\
 \n\
@@ -23,6 +23,10 @@ More options coming soon! May you find peace and wisdom at the temple of Functio
         }
 
         let code = codeSplit[1];
+
+        if (code.substring(0,2) === 'hs') {
+            code = code.substring(2);
+        }
 
         let before = "\
 #!/usr/local/bin/runhaskell\n\

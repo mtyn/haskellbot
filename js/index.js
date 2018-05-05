@@ -30,7 +30,15 @@ client.on('message', msg => {
       switch (messageComponents[1]) {
           case 'compile':
             HaskellBot.runCode(sender, message, (output) => {
-                msg.reply("I ran your haskell! Output is: ```\n" + output + "\n```");
+                if (output.length > 2000) {
+                    let bitsOfMessage = output.match(/.{1,1250}/g);
+                    msg.reply("I ran your haskell! It was too long for one message, it will now come in segments.");
+                    bitsOfMessage.forEach((b)=>{
+                        msg.reply("```" + b + "```");
+                    })
+                } else {
+                    msg.reply("I ran your haskell! Output is: ```\n" + output + "\n```");
+                }
             })
             break;
           case 'help':
