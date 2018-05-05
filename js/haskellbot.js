@@ -33,7 +33,7 @@ main = putStrLn $ show out\n\
 
         let runCode = before + code;
         // Then run the code string
-        let output = Runner.run(code, sender, (output) => {
+        let output = Runner.run(runCode, sender, (output) => {
             done(output);
         });
     }

@@ -1,0 +1,4 @@
+GHCi, version 8.2.1: http://www.haskell.org/ghc/  :? for help
+[1 of 1] Compiling Blah             ( hs/test.hs, interpreted )
+Failed, 0 modules loaded.
+Leaving GHCi.

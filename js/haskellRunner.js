@@ -1,4 +1,5 @@
-let spawn = require('child_process').exec;
+let exec = require('child_process').exec;
+let execfile = require('child_process').execFile;
 let fs = require('fs');
 
 module.exports = {
@@ -16,18 +17,21 @@ module.exports = {
             if (err) {
                 console.error('Error saving haskell file :(', err);
             } else {
+                let base = 'base';
+                exec(`echo ${base}`, (err, stdout, b) => {
+                    console.log(err, stdout, b);
+                });
                 // Then, we run that file through GHC
                 exec(`chmod +x ${filepath}/${user}.hs`, (err, a, b) => {
                     if (err) {
                         console.error("EXEC ERROR:", err);
                         done("FAIL: Error in executor for permission change")
                     } else {
-                        exec(`${filepath}/${user}.hs`, (err, stdout, stderr) => {
-                            console.log("HASKELL RAN")
+                        exec(`runhaskell ${filepath}/${user}.hs`, (err, stdout, stderr) => {
                             if (err) {
-                                done("FAIL: Haskell failed to run");
+                                console.log("ERROR:", err)
+                                done("FAIL: Haskell failed to run: \n" + stderr);
                             } else {
-                                console.log("STDOUT:", stdout)
                                 done(stdout);
                             }
                         })

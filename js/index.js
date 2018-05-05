@@ -10,7 +10,7 @@ client.on('ready', () => {
 
 client.on('message', msg => {
   let message = msg.content;
-  let sender = msg.sender.id;
+  let sender = msg.author.id;
 
   if (message.length < 3) {
       // Can't possibly have a bot tag in, so ignore for now.
@@ -19,11 +19,9 @@ client.on('message', msg => {
 
   // Summon haskellbot with !hs compile \n```stuff```
   let bottag = message.substring(0,3);
-  console.log(bottag)
   if (bottag === '!hs') {
       // This message is for haskellbot! Yay!
-      let messageComponents = message.split(" ")
-      console.log(messageComponents)
+      let messageComponents = message.split(" ");
       if (messageComponents.length < 2) {
           // No command for Haskellbot
           msg.reply(HaskellBot.generateHelpText());
@@ -34,6 +32,7 @@ client.on('message', msg => {
             HaskellBot.runCode(sender, message, (output) => {
                 msg.reply("I ran your haskell! Output is: ```\n" + output + "\n```");
             })
+            break;
           case 'help':
           default:
             msg.reply(HaskellBot.generateHelpText());
