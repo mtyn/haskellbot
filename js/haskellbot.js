@@ -1,6 +1,12 @@
 let Runner = require('./haskellRunner.js');
 let spawn = require('child_process').spawn;
 
+var nameMappings = {
+    '428927344778936330': 'Nathan',
+    '283348992249561090': 'Kevin',
+    '340212889715474454': 'Tim'
+}
+
 module.exports = {
     generateHelpText: () => {
         return "\
@@ -40,6 +46,10 @@ main = putStrLn $ show out\n\
         let output = Runner.run(runCode, sender, (output) => {
             done(output);
         });
+    },
+
+    doQuiz: (channel, scores) => {
+
     }
 
 }

@@ -8,12 +8,6 @@ var currentScores = {
 
 }
 
-var nameMappings = {
-    '428927344778936330': 'Nathan',
-    '283348992249561090': 'Kevin',
-    '340212889715474454': 'Tim'
-}
-
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -58,7 +52,7 @@ client.on('message', msg => {
             break;
           case 'quiz':
             let targetChannel = msg.channel;
-            HaskellBot.
+            HaskellBot.doQuiz(targetChannel, currentScores);
             break;
           case 'help':
           default:
