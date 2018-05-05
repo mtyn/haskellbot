@@ -1,5 +1,39 @@
-let spawn = require('child_process').spawn;
+let spawn = require('child_process').exec;
+let fs = require('fs');
 
-export const Runner {
+module.exports = {
+    run: (codeString, user, done) => {
+        // WARNING: This code is very bad. Don't do this. This accepts arbritary haskell code from
+        // a discord server, and runs it. This is only OK because the discord server this is being
+        // used on only has a few trusted users. In general, running arbritary code supplied by random
+        // users is **NOT** recommended, for obvious reasons. I may fix this in the future? Although
+        // it would limit what the bot does, so I'm not sure if I will
 
+        let filepath = '../hs/tmp'
+
+        // First, we output the code to a file
+        fs.writeFile(`${filepath}/${user}.hs`, codeString, (err) => {
+            if (err) {
+                console.error('Error saving haskell file :(', err);
+            } else {
+                // Then, we run that file through GHC
+                exec(`chmod +x ${filepath}/${user}.hs`, (err, a, b) => {
+                    if (err) {
+                        console.error("EXEC ERROR:", err);
+                        done("FAIL: Error in executor for permission change")
+                    } else {
+                        exec(`${filepath}/${user}.hs`, (err, stdout, stderr) => {
+                            console.log("HASKELL RAN")
+                            if (err) {
+                                done("FAIL: Haskell failed to run");
+                            } else {
+                                console.log("STDOUT:", stdout)
+                                done(stdout);
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
 }
