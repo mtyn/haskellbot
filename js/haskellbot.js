@@ -57,17 +57,42 @@ main = putStrLn $ show out\n\
 
     doQuiz: (channel, scores) => {
         let question = getRandomInt(0, quizQuestions.length);
-        let questionMessage = ```**Quiz Time**: First to answer correctly wins! Use !hs answer <code> to answer.\n
+        let questionMessage = `**Quiz Time**: First to answer correctly wins! Use !hs answer <code> to answer.\n\
         \`\`\`
-${quizQuestions[question]}
+${quizQuestions[question].question}
 \`\`\`
-        ```
+        `
         channel.send(questionMessage);
         return question;
     },
 
-    answer: (active, message) => {
+    answerQuiz: (sender, active, messageText, done) => {
+        let codeSplit = messageText.split("```");
+        if (codeSplit.length < 2) {
+            return "FAILED TO EXECUTE: You didn't format your message correctly! Put whatever you want me to run in a code block please!"
+        }
 
+        let code = codeSplit[1];
+
+        if (code.substring(0,2) === 'hs') {
+            code = code.substring(2);
+        }
+
+        let before = "\
+#!/usr/local/bin/runhaskell\n\
+module Main where\n\
+main = putStrLn $ show out\n\
+        "
+
+        let runCode = before + code;
+        // Then run the code string
+        let output = Runner.run(runCode, sender, (output) => {
+            if (output.trim() === quizQuestions[active].answer) {
+                done(true)
+            } else {
+                done(false)
+            }
+        });
     }
 
 }

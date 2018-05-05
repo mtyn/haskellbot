@@ -69,21 +69,28 @@ client.on('message', msg => {
             activeQuizQuestion = HaskellBot.doQuiz(targetChannel, currentScores);
             break;
           case 'answer':
-            var isRight = HaskellBot.answerQuiz(activeQuizQuestion, msg);
-            if (isRight) {
+            if (activeQuizQuestion < 0) {
+                msg.reply("There is no active quiz question right now. Try !hs quiz to start one.")
+            }
+            HaskellBot.answerQuiz(sender, activeQuizQuestion, message, (isRight) => {
                 let user = nameMappings[sender];
-                currentScores[user] = currentScores[user] + 1
-                msg.reply(```
-Congrats, ${user.toUpperCase()}, you got a point! The current scores are:\n
+                if (isRight) {
+
+                    currentScores[user] = currentScores[user] + 1
+                    msg.reply(`
+Congrats, ${user[0].toUpperCase() + user.substring(1)}, you got a point! The current scores are:\n
 \`\`\`
 Kevin: ${currentScores.kevin},
 Nathan: ${currentScores.nathan},
 Tim: ${currentScores.tim},
 Cher: ${currentScores.cher}
 \`\`\`
-```)
-                activeQuizQuestion = -1;
-            }
+`)
+                    activeQuizQuestion = -1;
+                } else {
+                    msg.reply(`Bad luck, ${user[0].toUpperCase() + user.substring(1)}, that's wrong...`)
+                }
+            });
             break;
           case 'help':
           default:
