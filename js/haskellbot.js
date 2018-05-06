@@ -93,6 +93,14 @@ main = putStrLn $ show out\n\
                 done(false)
             }
         });
+    },
+
+    addQuestion: (q, a) => {
+        quizQuestions.push({
+            question: q,
+            answer: a
+        })
+        return q + ' ' + a;
     }
 
 }

@@ -61,6 +61,15 @@ client.on('message', msg => {
                 }
             })
             break;
+          case 'addQuestion':
+            // Message should be !hs addQuestion `question` `answer`. This means splitting on ` will
+            // give [stuff, question, '', answer]
+            let messageBits = message.split('`');
+            let question = messageBits[1];
+            let answer = messageBits[3];
+            let string = HaskellBot.addQuestion(question, answer);
+            msg.reply("Added a question, " + string);
+            break;
           case 'quiz':
             let targetChannel = msg.channel;
             if (activeQuizQuestion >= 0) {
