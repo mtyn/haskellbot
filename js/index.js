@@ -65,12 +65,14 @@ client.on('message', msg => {
             let targetChannel = msg.channel;
             if (activeQuizQuestion >= 0) {
                 msg.reply("There is already an active quiz, try answering that instead")
+                break;
             }
             activeQuizQuestion = HaskellBot.doQuiz(targetChannel, currentScores);
             break;
           case 'answer':
             if (activeQuizQuestion < 0) {
                 msg.reply("There is no active quiz question right now. Try !hs quiz to start one.")
+                break;
             }
             HaskellBot.answerQuiz(sender, activeQuizQuestion, message, (isRight) => {
                 let user = nameMappings[sender];
