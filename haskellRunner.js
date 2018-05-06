@@ -10,7 +10,7 @@ module.exports = {
         // users is **NOT** recommended, for obvious reasons. I may fix this in the future? Although
         // it would limit what the bot does, so I'm not sure if I will
 
-        let filepath = '../hs/tmp'
+        let filepath = './hs/tmp'
 
         // First, we output the code to a file
         fs.writeFile(`${filepath}/${user}.hs`, codeString, (err) => {

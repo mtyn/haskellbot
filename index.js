@@ -1,4 +1,4 @@
-let secrets = require('../secrets/secrets.js');
+let secrets = require('./secrets/secrets.js');
 let HaskellBot = require('./haskellbot.js');
 
 const Discord = require('discord.js');
