@@ -22,6 +22,9 @@ My options are:\n\
 \`\`\`\n\
 !hs compile <glorious haskell code>: runs the provided haskell code and returns the result. Requires that the haskell has a function out with the result you want to get.\n\
 !hs help: shows this menu\n\
+!hs quiz: starts a quiz!\n\
+!hs answer: answer a quiz question\n\
+It is also possible to add new quiz questions.\n\
 \`\`\`\n\
 \n\
 More options coming soon! May you find peace and wisdom at the temple of Functional Programming!\n\
