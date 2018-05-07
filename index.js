@@ -104,7 +104,7 @@ client.on('message', msg => {
                 msg.reply("There is no active quiz question right now. Try !hs quiz to start one.")
                 break;
             }
-            HaskellBot.answerQuiz(sender, activeQuizQuestion, message, (isRight) => {
+            HaskellBot.answerQuiz(sender, activeQuizQuestion, message, (isRight, output) => {
                 let user = nameMappings[sender];
                 if (isRight) {
 
@@ -121,7 +121,7 @@ Cher: ${currentScores.cher}
                     activeQuizQuestion = -1;
                     saveScores()
                 } else {
-                    msg.reply(`Bad luck, ${user[0].toUpperCase() + user.substring(1)}, that's wrong...`)
+                    msg.reply(`Bad luck, ${user[0].toUpperCase() + user.substring(1)}, that's wrong...\n` + output)
                 }
             });
             break;

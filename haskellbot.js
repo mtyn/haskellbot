@@ -100,9 +100,9 @@ main = putStrLn $ show out\n\
                 if (currentQuestion >= quizQuestions.length) {
                     currentQuestion = 0
                 }
-                done(true)
+                done(true, output)
             } else {
-                done(false)
+                done(false, output)
             }
         });
     },
