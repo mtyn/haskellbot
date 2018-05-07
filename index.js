@@ -7,7 +7,8 @@ const client = new Discord.Client();
 var nameMappings = {
     '428927344778936330': 'nathan',
     '283348992249561090': 'kevin',
-    '340212889715474454': 'tim'
+    '340212889715474454': 'tim',
+    '193110693376032769': 'cher'
 }
 
 var currentScores = {
@@ -21,6 +22,8 @@ var activeQuizQuestion = -1;
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  HaskellBot.loadQuizQuestions();
+  client.user.setGame("in the temple of Functional Programming, listening to guru Jeremy");
 });
 
 client.on('message', msg => {
@@ -33,8 +36,8 @@ client.on('message', msg => {
   }
 
   // Summon haskellbot with !hs compile \n```stuff```
-  let bottag = message.substring(0,3);
-  if (bottag === '!hs') {
+  let bottag = message.substring(0,1);
+  if (bottag === '!') {
       // This message is for haskellbot! Yay!
       let messageComponents = message.split(" ");
       if (messageComponents.length < 2) {
@@ -42,13 +45,13 @@ client.on('message', msg => {
           msg.reply(HaskellBot.generateHelpText());
           return
       }
-      let switchString = messageComponents[1];
+      let switchString = messageComponents[0];
       if (switchString[switchString.length-1] === '\n') {
           switchString = switchString.subString(0, switchString.length-1);
       }
 
       switch (switchString) {
-          case 'compile':
+          case '!run':
             HaskellBot.runCode(sender, message, (output) => {
                 if (output.length > 1910) {
                     let bitsOfMessage = output.match(/(.|[\r\n]){1,1750}/g);
@@ -61,7 +64,7 @@ client.on('message', msg => {
                 }
             })
             break;
-          case 'addQuestion':
+          case '!newQ':
             // Message should be !hs addQuestion `question` `answer`. This means splitting on ` will
             // give [stuff, question, '', answer]
             let messageBits = message.split('`');
@@ -70,7 +73,7 @@ client.on('message', msg => {
             let string = HaskellBot.addQuestion(question, answer);
             msg.reply("Added a question, " + string);
             break;
-          case 'quiz':
+          case '!q':
             let targetChannel = msg.channel;
             if (activeQuizQuestion >= 0) {
                 msg.reply("There is already an active quiz, try answering that instead")
@@ -78,7 +81,7 @@ client.on('message', msg => {
             }
             activeQuizQuestion = HaskellBot.doQuiz(targetChannel, currentScores);
             break;
-          case 'answer':
+          case '!a':
             if (activeQuizQuestion < 0) {
                 msg.reply("There is no active quiz question right now. Try !hs quiz to start one.")
                 break;
@@ -103,9 +106,15 @@ Cher: ${currentScores.cher}
                 }
             });
             break;
-          case 'help':
-          default:
+          case '!help':
             msg.reply(HaskellBot.generateHelpText());
+            break
+          case '!skip':
+            activeQuizQuestion = -1;
+            msg.reply("Question skipped! No points this time.")
+            break;
+          default:
+            break
       }
   }
 });

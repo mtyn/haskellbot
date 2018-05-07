@@ -1,5 +1,8 @@
-let Runner = require('./haskellRunner.js');
-let spawn = require('child_process').spawn;
+const Runner = require('./haskellRunner.js');
+const spawn = require('child_process').spawn;
+const fs = require('fs');
+
+const questionFilepath = "./questions.json";
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -7,7 +10,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
-const quizQuestions = [
+var quizQuestions = [
     {
         question: "Write some Haskell to find the maximum item in this list [1,4,9,2,3,12]",
         answer: "12"
@@ -17,14 +20,15 @@ const quizQuestions = [
 module.exports = {
     generateHelpText: () => {
         return "\
-Hi, I'm the enlightened HaskellBot! You summoned me with no command 😢.\n\
+Hi, I'm the enlightened HaskellBot! You needed help... 😢.\n\
 My options are:\n\
 \`\`\`\n\
-!hs compile <glorious haskell code>: runs the provided haskell code and returns the result. Requires that the haskell has a function out with the result you want to get.\n\
-!hs help: shows this menu\n\
-!hs quiz: starts a quiz!\n\
-!hs answer: answer a quiz question\n\
-It is also possible to add new quiz questions.\n\
+!run <glorious haskell code>: runs the provided haskell code and returns the result. Requires that the haskell has a function out with the result you want to get.\n\
+!help: shows this menu\n\
+!q: starts a quiz!\n\
+!a <code to answer question>: answer a quiz question\n\
+!newQ `question` `answer`: add a question to the quiz\n\
+!skip: ends the current question without a score\n\
 \`\`\`\n\
 \n\
 More options coming soon! May you find peace and wisdom at the temple of Functional Programming!\n\
@@ -103,7 +107,23 @@ main = putStrLn $ show out\n\
             question: q,
             answer: a
         })
+        fs.writeFile(questionFilepath, JSON.stringify(quizQuestions), 'utf8', (err) => {
+            if (err) {
+                console.error("Failed to write questions to file", err);
+            }
+        })
         return q + ' ' + a;
+    },
+
+    loadQuizQuestions: () => {
+        fs.readFile(questionFilepath, 'utf8', (err, data) => {
+            if (err) {
+                console.error("Failed to read questions from file", err);
+            }
+            if (data) {
+                quizQuestions = JSON.parse(data);
+            }
+        })
     }
 
 }

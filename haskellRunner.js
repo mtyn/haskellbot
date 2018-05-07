@@ -1,6 +1,6 @@
-let exec = require('child_process').exec;
-let execfile = require('child_process').execFile;
-let fs = require('fs');
+const exec = require('child_process').exec;
+const execfile = require('child_process').execFile;
+const fs = require('fs');
 
 module.exports = {
     run: (codeString, user, done) => {
