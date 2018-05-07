@@ -17,6 +17,8 @@ var quizQuestions = [
     }
 ]
 
+var currentQuestion = 0
+
 module.exports = {
     generateHelpText: () => {
         return "\
@@ -63,14 +65,13 @@ main = putStrLn $ show out\n\
     },
 
     doQuiz: (channel, scores) => {
-        let question = getRandomInt(0, quizQuestions.length);
         let questionMessage = `**Quiz Time**: First to answer correctly wins! Use !hs answer <code> to answer.\n\
         \`\`\`
-${quizQuestions[question].question}
+${quizQuestions[currentQuestion].question}
 \`\`\`
         `
         channel.send(questionMessage);
-        return question;
+        return currentQuestion;
     },
 
     answerQuiz: (sender, active, messageText, done) => {
@@ -95,6 +96,10 @@ main = putStrLn $ show out\n\
         // Then run the code string
         let output = Runner.run(runCode, sender, (output) => {
             if (output.trim() === quizQuestions[active].answer) {
+                currentQuestion = currentQuestion + 1;
+                if (currentQuestion >= quizQuestions.length) {
+                    currentQuestion = 0
+                }
                 done(true)
             } else {
                 done(false)

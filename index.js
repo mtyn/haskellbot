@@ -53,7 +53,7 @@ client.on('message', msg => {
   let message = msg.content;
   let sender = msg.author.id;
 
-  if (message.length < 3) {
+  if (message.length < 2) {
       // Can't possibly have a bot tag in, so ignore for now.
       return
   }
@@ -63,11 +63,6 @@ client.on('message', msg => {
   if (bottag === '!') {
       // This message is for haskellbot! Yay!
       let messageComponents = message.split(" ");
-      if (messageComponents.length < 2) {
-          // No command for Haskellbot
-          msg.reply(HaskellBot.generateHelpText());
-          return
-      }
       let switchString = messageComponents[0];
       if (switchString[switchString.length-1] === '\n') {
           switchString = switchString.subString(0, switchString.length-1);
