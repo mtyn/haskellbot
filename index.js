@@ -1,8 +1,11 @@
-let secrets = require('./secrets/secrets.js');
-let HaskellBot = require('./haskellbot.js');
+const secrets = require('./secrets/secrets.js');
+const HaskellBot = require('./haskellbot.js');
+const fs = require('fs');
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
+
+const scoresFilepath = "./scores.json";
 
 var nameMappings = {
     '428927344778936330': 'nathan',
@@ -20,9 +23,29 @@ var currentScores = {
 
 var activeQuizQuestion = -1;
 
+function loadScores() {
+    fs.readFile(scoresFilepath, 'utf8', (err, data) => {
+        if (err) {
+            console.error("Failed to read questions from file", err);
+        }
+        if (data) {
+            quizQuestions = JSON.parse(data);
+        }
+    })
+}
+
+function saveScores() {
+    fs.writeFile(scoresFilepath, JSON.stringify(currentScores), 'utf8', (err) => {
+        if (err) {
+            console.error("Failed to write questions to file", err);
+        }
+    })
+}
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   HaskellBot.loadQuizQuestions();
+  loadScores()
   client.user.setGame("in the temple of Functional Programming, listening to guru Jeremy");
 });
 
@@ -101,6 +124,7 @@ Cher: ${currentScores.cher}
 \`\`\`
 `)
                     activeQuizQuestion = -1;
+                    saveScores()
                 } else {
                     msg.reply(`Bad luck, ${user[0].toUpperCase() + user.substring(1)}, that's wrong...`)
                 }
