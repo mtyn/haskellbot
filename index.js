@@ -29,7 +29,7 @@ function loadScores() {
             console.error("Failed to read questions from file", err);
         }
         if (data) {
-            quizQuestions = JSON.parse(data);
+            currentScores = JSON.parse(data);
         }
     })
 }
