@@ -121,7 +121,7 @@ Cher: ${currentScores.cher}
                     activeQuizQuestion = -1;
                     saveScores()
                 } else {
-                    msg.reply(`Bad luck, ${user[0].toUpperCase() + user.substring(1)}, that's wrong...\n` + output)
+                    msg.reply(`Bad luck, ${user[0].toUpperCase() + user.substring(1)}, that's wrong...\n\`\`\`` + output + '```')
                 }
             });
             break;
