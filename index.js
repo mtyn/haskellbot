@@ -97,7 +97,16 @@ client.on('message', msg => {
                 msg.reply("There is already an active quiz, try answering that instead")
                 break;
             }
-            activeQuizQuestion = HaskellBot.doQuiz(targetChannel, currentScores);
+            let messageParts = message.split(" ");
+            var doQuestion = activeQuizQuestion;
+            if (messageParts.length > 1) {
+                doQuestion = messageParts[1]
+            }
+            activeQuizQuestion = HaskellBot.doQuiz(targetChannel, currentScores, doQuestion);
+            break;
+          case '!getQs':
+            let questions = HaskellBot.getQuestions()
+            msg.reply("The current questions are: \n " + questions);
             break;
           case '!a':
             if (activeQuizQuestion < 0) {

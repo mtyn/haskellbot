@@ -27,10 +27,12 @@ My options are:\n\
 \`\`\`\n\
 !run <glorious haskell code>: runs the provided haskell code and returns the result. Requires that the haskell has a function out with the result you want to get.\n\
 !help: shows this menu\n\
-!q: starts a quiz!\n\
+!q <opt: q number>: starts a quiz! (optionally with a specific question)\n\
+!getQs: gets the question numbers\n\
 !a <code to answer question>: answer a quiz question\n\
 !newQ `question` `answer`: add a question to the quiz\n\
 !skip: ends the current question without a score\n\
+!getQs: gets the question numbers\n\
 \`\`\`\n\
 \n\
 More options coming soon! May you find peace and wisdom at the temple of Functional Programming!\n\
@@ -64,12 +66,20 @@ main = putStrLn $ show out\n\
         });
     },
 
-    doQuiz: (channel, scores) => {
+    doQuiz: (channel, scores, questionNumber) => {
+        console.log(questionNumber)
+        if (questionNumber < 0) {
+            questionNumber = currentQuestion;
+        }
+        if (questionNumber > (quizQuestions.length - 1)) {
+            questionNumber = currentQuestion;
+        }
         let questionMessage = `**Quiz Time**: First to answer correctly wins! Use !hs answer <code> to answer.\n\
         \`\`\`
-${quizQuestions[currentQuestion].question}
+${quizQuestions[questionNumber].question}
 \`\`\`
         `
+        currentQuestion = questionNumber
         channel.send(questionMessage);
         return currentQuestion;
     },
@@ -117,7 +127,7 @@ main = putStrLn $ show out\n\
                 console.error("Failed to write questions to file", err);
             }
         })
-        return q + ' ' + a;
+        return 'Q' + (quizQuestions.length - 1) + ': ' + q + ' ' + a;
     },
 
     loadQuizQuestions: () => {
@@ -129,6 +139,16 @@ main = putStrLn $ show out\n\
                 quizQuestions = JSON.parse(data);
             }
         })
+    },
+
+    getQuestions: () => {
+        let outputString = ""
+        var count = 0
+        quizQuestions.forEach((a)=>{
+            outputString = outputString + count + " "
+            count = count + 1
+        })
+        return outputString;
     }
 
 }
