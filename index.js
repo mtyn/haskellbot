@@ -18,7 +18,8 @@ var currentScores = {
     'nathan': 0,
     'tim': 0,
     'kevin': 0,
-    'cher': 0
+    'cher': 0,
+    'random citizen': 0
 }
 
 var activeQuizQuestion = -1;
@@ -116,15 +117,19 @@ client.on('message', msg => {
             HaskellBot.answerQuiz(sender, activeQuizQuestion, message, (isRight, output) => {
                 let user = nameMappings[sender];
                 if (isRight) {
-
+                    if (!user) {
+                        user = "random citizen"
+                    }
                     currentScores[user] = currentScores[user] + 1
+
                     msg.reply(`
 Congrats, ${user[0].toUpperCase() + user.substring(1)}, you got a point! The current scores are:\n
 \`\`\`
 Kevin: ${currentScores.kevin},
 Nathan: ${currentScores.nathan},
 Tim: ${currentScores.tim},
-Cher: ${currentScores.cher}
+Cher: ${currentScores.cher},
+Random Citizen: ${currentScores['random citizen']}
 \`\`\`
 `)
                     activeQuizQuestion = -1;
