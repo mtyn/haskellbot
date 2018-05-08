@@ -94,7 +94,7 @@ client.on('message', msg => {
           case '!q':
             let targetChannel = msg.channel;
             if (activeQuizQuestion >= 0) {
-                msg.reply(`There is already an active quiz - with question ${activeQuizQuestion}, try answering that instead`)
+                HaskellBot.doQuiz(targetChannel, currentScores, activeQuizQuestion)
                 break;
             }
             let messageParts = message.split(" ");
