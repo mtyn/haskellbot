@@ -135,6 +135,7 @@ Cher: ${currentScores.cher}
             });
             break;
           case '!help':
+          case '!h':
             msg.reply(HaskellBot.generateHelpText());
             break
           case '!skip':
