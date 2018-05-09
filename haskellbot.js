@@ -67,6 +67,7 @@ main = putStrLn $ show out\n\
     },
 
     doQuiz: (channel, scores, questionNumber) => {
+        console.trace("something")
         console.log(questionNumber)
         if (questionNumber < 0) {
             questionNumber = currentQuestion;

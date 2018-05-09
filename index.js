@@ -8,10 +8,6 @@ const client = new Discord.Client();
 const scoresFilepath = "./scores.json";
 const nameMappingsFilepath = "./nameMappings.json";
 
-var nameMappings = {
-    // ADD DISCORD TO NAME MAPPINGS HERE
-}
-
 var currentScores = {
     // NAME STUFF HERE
 }
@@ -29,17 +25,6 @@ function loadScores() {
     })
 }
 
-function loadPlayerMappings() {
-    fs.readFile(nameMappingsFilepath, 'utf8', (err, data) => {
-        if (err) {
-            console.error("Failed to read questions from file", err);
-        }
-        if (data) {
-            nameMappings = JSON.parse(data);
-        }
-    })
-}
-
 function saveScores() {
     fs.writeFile(scoresFilepath, JSON.stringify(currentScores), 'utf8', (err) => {
         if (err) {
@@ -52,7 +37,6 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   HaskellBot.loadQuizQuestions();
   loadScores()
-  loadPlayerMappings()
   client.user.setGame("in the temple of Functional Programming, listening to guru Jeremy");
 });
 
@@ -121,7 +105,7 @@ client.on('message', msg => {
                 break;
             }
             HaskellBot.answerQuiz(sender, activeQuizQuestion, message, (isRight, output) => {
-                let user = nameMappings[sender];
+                let user = msg.author.username;
                 if (isRight) {
                     if (!user) {
                         user = "random citizen"
@@ -129,8 +113,10 @@ client.on('message', msg => {
                     currentScores[user] = currentScores[user] + 1
 
                     var scorestring = ""
-                    for (var key in Object.keys(nameMappings)) {
-                        scorestring = scorestring + `${nameMappings[key]}: ${currentScores[nameMappings[key]]}\n`
+                    scores = Object.entries(currentScores)
+                    for (entry in scores) {
+                        actualEntry = scores[entry]
+                        scorestring = scorestring + `${actualEntry[0]}: ${actualEntry[1]}`
                     }
 
                     msg.reply(`
