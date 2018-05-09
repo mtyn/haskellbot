@@ -6,6 +6,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const scoresFilepath = "./scores.json";
+const nameMappingsFilepath = "./nameMappings.json";
 
 var nameMappings = {
     // ADD DISCORD TO NAME MAPPINGS HERE
@@ -28,6 +29,17 @@ function loadScores() {
     })
 }
 
+function loadPlayerMappings() {
+    fs.readFile(nameMappingsFilepath, 'utf8', (err, data) => {
+        if (err) {
+            console.error("Failed to read questions from file", err);
+        }
+        if (data) {
+            nameMappings = JSON.parse(data);
+        }
+    })
+}
+
 function saveScores() {
     fs.writeFile(scoresFilepath, JSON.stringify(currentScores), 'utf8', (err) => {
         if (err) {
@@ -40,6 +52,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   HaskellBot.loadQuizQuestions();
   loadScores()
+  loadPlayerMappings()
   client.user.setGame("in the temple of Functional Programming, listening to guru Jeremy");
 });
 
@@ -115,10 +128,15 @@ client.on('message', msg => {
                     }
                     currentScores[user] = currentScores[user] + 1
 
+                    var scorestring = ""
+                    for (var key in Object.keys(nameMappings)) {
+                        scorestring = scorestring + `${nameMappings[key]}: ${currentScores[nameMappings[key]]}\n`
+                    }
+
                     msg.reply(`
 Congrats, ${user[0].toUpperCase() + user.substring(1)}, you got a point! The current scores are:\n
 \`\`\`
-
+${scorestring}
 \`\`\`
 `) // Add score print outs for your server here
                     activeQuizQuestion = -1;
