@@ -14,6 +14,4 @@ module.exports = {
 
 2. Create a `hs/tmp` directory to hold the generated haskell files
 3. Run `yarn install` to install dependencies
-4. Run `node index.js` to start the bot!
-
-Automated setup / tests / more features coming soon.
+4. Run `npm start` to start the bot!

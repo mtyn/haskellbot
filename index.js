@@ -37,7 +37,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   HaskellBot.loadQuizQuestions();
   loadScores()
-  client.user.setGame("in the temple of Functional Programming, listening to guru Jeremy");
+  client.user.setGame("in the temple of Functional Programming.");
 });
 
 client.on('message', msg => {
