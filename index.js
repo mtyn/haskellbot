@@ -8,18 +8,11 @@ const client = new Discord.Client();
 const scoresFilepath = "./scores.json";
 
 var nameMappings = {
-    '428927344778936330': 'nathan',
-    '283348992249561090': 'kevin',
-    '340212889715474454': 'tim',
-    '193110693376032769': 'cher'
+    // ADD DISCORD TO NAME MAPPINGS HERE
 }
 
 var currentScores = {
-    'nathan': 0,
-    'tim': 0,
-    'kevin': 0,
-    'cher': 0,
-    'random citizen': 0
+    // NAME STUFF HERE
 }
 
 var activeQuizQuestion = -1;
@@ -125,13 +118,9 @@ client.on('message', msg => {
                     msg.reply(`
 Congrats, ${user[0].toUpperCase() + user.substring(1)}, you got a point! The current scores are:\n
 \`\`\`
-Kevin: ${currentScores.kevin},
-Nathan: ${currentScores.nathan},
-Tim: ${currentScores.tim},
-Cher: ${currentScores.cher},
-Random Citizen: ${currentScores['random citizen']}
+
 \`\`\`
-`)
+`) // Add score print outs for your server here
                     activeQuizQuestion = -1;
                     saveScores()
                 } else {
